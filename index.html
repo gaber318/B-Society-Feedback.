@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B' Society - تقييم الزيارة</title>
+    <style>
+        :root {
+            /* درجات الألوان المستوحاة بدقة متناهية من بوستر B' Society المرفق */
+            --poster-blue: #2c53d1;
+            --poster-yellow: #f8e71c;
+            --poster-green: #2ecc71;
+            --poster-red: #e74c3c;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, var(--poster-blue) 0%, #1a36a0 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: #ffffff;
+            color: #333;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            text-align: center;
+            border-top: 6px solid var(--poster-yellow);
+            margin: 20px;
+        }
+
+        h2 {
+            color: var(--poster-blue);
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        #branch-title {
+            font-size: 15px;
+            color: var(--poster-green);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--poster-blue);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--poster-blue);
+        }
+
+        .time-label {
+            font-weight: bold;
+            font-size: 13px;
+            color: var(--poster-blue);
+            margin-bottom: 8px;
+            text-align: right;
+            display: block;
+        }
+
+        /* شبكة أزرار أوقات الزيارة مطابقة لألوان البوستر بدقة */
+        .times-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 6px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+
+        .time-btn {
+            padding: 10px 5px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            border: none;
+        }
+
+        /* توزيع الألوان الأربعة من البوستر بالتناوب على الأزرار (أزرق، أصفر، أخضر، أحمر) */
+        .time-btn:nth-child(4n+1) { background-color: var(--poster-blue); color: #fff; }
+        .time-btn:nth-child(4n+2) { background-color: var(--poster-yellow); color: #222; } /* لون النص داكن للوضوح على الأصفر الساطع */
+        .time-btn:nth-child(4n+3) { background-color: var(--poster-green); color: #fff; }
+        .time-btn:nth-child(4n+4) { background-color: var(--poster-red); color: #fff; }
+
+        .time-btn:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+        }
+
+        /* عند اختيار الزر يظهر عليه إطار أسود بارز لتمييزه فوراً */
+        .time-btn.selected {
+            outline: 3px solid #111;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-submit {
+            background-color: var(--poster-blue);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: #1a36a0;
+        }
+
+        .brand-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-blue { background-color: var(--poster-blue); }
+        .dot-yellow { background-color: var(--poster-yellow); }
+        .dot-green { background-color: var(--poster-green); }
+        .dot-red { background-color: var(--poster-red); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>B' Society</h2>
+        <div id="branch-title">جارِ تحديد الفرع...</div>
+
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label>اسم العميل:</label>
+                <input type="text" id="customerName" required placeholder="أدخل اسمك الكريم">
+            </div>
+
+            <div class="form-group">
+                <label>رقم الموبايل:</label>
+                <input type="tel" id="customerPhone" required placeholder="01xxxxxxxxx">
+            </div>
+
+            <div class="form-group">
+                <span class="time-label">اختر وقت الزيارة:</span>
+                <div class="times-grid" id="timesGrid">
+                    <button type="button" class="time-btn" data-time="07:00 صباحاً">07:00 ص</button>
+                    <button type="button" class="time-btn" data-time="08:00 صباحاً">08:00 ص</button>
+                    <button type="button" class="time-btn" data-time="09:00 صباحاً">09:00 ص</button>
+                    <button type="button" class="time-btn" data-time="10:00 صباحاً">10:00 ص</button>
+                    <button type="button" class="time-btn" data-time="11:00 صباحاً">11:00 ص</button>
+                    <button type="button" class="time-btn" data-time="12:00 ظهراً">12:00 م</button>
+                    <button type="button" class="time-btn" data-time="01:00 مساءً">01:00 م</button>
+                    <button type="button" class="time-btn" data-time="02:00 مساءً">02:00 م</button>
+                    <button type="button" class="time-btn" data-time="03:00 مساءً">03:00 م</button>
+                    <button type="button" class="time-btn" data-time="04:00 مساءً">04:00 م</button>
+                    <button type="button" class="time-btn" data-time="05:00 مساءً">05:00 م</button>
+                    <button type="button" class="time-btn" data-time="06:00 مساءً">06:00 م</button>
+                    <button type="button" class="time-btn" data-time="07:00 مساءً">07:00 م</button>
+                    <button type="button" class="time-btn" data-time="08:00 مساءً">08:00 م</button>
+                    <button type="button" class="time-btn" data-time="09:00 مساءً">09:00 م</button>
+                    <button type="button" class="time-btn" data-time="10:00 مساءً">10:00 م</button>
+                    <button type="button" class="time-btn" data-time="11:00 مساءً">11:00 م</button>
+                    <button type="button" class="time-btn" data-time="12:00 منتصف الليل">12:00 ص</button>
+                    <button type="button" class="time-btn" data-time="01:00 بعد منتصف الليل">01:00 ص</button>
+                    <button type="button" class="time-btn" data-time="02:00 بعد منتصف الليل">02:00 ص</button>
+                </div>
+                <input type="hidden" id="selectedTime" required>
+            </div>
+
+            <button type="submit" class="btn-submit">تأكيد وانتقال للتقييم</button>
+        </form>
+
+        <div class="brand-dots">
+            <div class="dot dot-blue"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <div class="dot dot-red"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTimeString = "";
+        const buttons = document.querySelectorAll('.time-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTimeString = btn.getAttribute('data-time');
+                document.getElementById('selectedTime').value = selectedTimeString;
+            });
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const branchKey = urlParams.get('branch') || 'ramada';
+
+        const branchesData = {
+            'ramada': { name: 'فرع الرمادا (المنصورة)', maps: 'https://maps.app.goo.gl/RAMADA_LINK' },
+            'marshal': { name: 'فرع مارشال (المنصورة)', maps: 'https://maps.app.goo.gl/MARSHAL_LINK' },
+            'tanta': { name: 'فرع طنطا (شارع الجيش)', maps: 'https://maps.app.goo.gl/TANTA_LINK' },
+            'tagamoa': { name: 'فرع التجمع الخامس (تريفيوم سكوير)', maps: 'https://maps.app.goo.gl/TAGAMOA_LINK' }
+        };
+
+        const currentBranch = branchesData[branchKey] || branchesData['ramada'];
+        document.getElementById('branch-title').innerText = `أهلاً بك في ${currentBranch.name}`;
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const time = document.getElementById('selectedTime').value;
+
+            if (!time) {
+                alert('الرجاء اختيار وقت الزيارة بالضغط على أحد الأزرار أولاً');
+                return;
+            }
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxya-lU3nlI8cF5ud3xCyBlxgbUGXo3gX043jIPymMwQpPGEO71exGk3Xkfh0p64al/exec';
+
+            const formData = {
+                branch: currentBranch.name,
+                name: name,
+                phone: phone,
+                time: time
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).then(() => {
+                window.location.href = currentBranch.maps;
+            }).catch(error => {
+                console.error('Error!', error);
+                window.location.href = currentBranch.maps;
+            });
+        });
+    </script>
+</body>
+</html>
