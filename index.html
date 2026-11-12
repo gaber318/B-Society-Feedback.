@@ -27,7 +27,7 @@
             overflow-x: hidden;
         }
 
-        /* خلفية الصور المتحركة بصيغة .jpg */
+        /* خلفية سلايد أصغر حجماً وتتحرك بانسيابية من اليمين للشمال */
         .bg-slideshow {
             position: absolute;
             top: 0;
@@ -35,17 +35,28 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            background-size: cover;
+            background-size: 75% auto; /* حجم أصغر للصور (تظهر بشكل إطار مركزي جميل) */
+            background-repeat: no-repeat;
             background-position: center;
-            animation: slideAnimation 15s infinite linear;
-            filter: brightness(0.5);
+            animation: slideRightToLeft 15s infinite linear;
+            filter: brightness(0.7);
         }
 
-        @keyframes slideAnimation {
-            0%   { background-image: url('1.jpg'); }
-            33%  { background-image: url('2.jpg'); }
-            66%  { background-image: url('3.jpg'); }
-            100% { background-image: url('1.jpg'); }
+        @keyframes slideRightToLeft {
+            0%   { background-image: url('1.jpg'); background-position: 120% center; opacity: 0; }
+            10%  { opacity: 1; }
+            30%  { background-position: center center; opacity: 1; }
+            33%  { opacity: 0; }
+            
+            33.1% { background-image: url('2.jpg'); background-position: 120% center; opacity: 0; }
+            40%  { opacity: 1; }
+            63%  { background-position: center center; opacity: 1; }
+            66%  { opacity: 0; }
+            
+            66.1% { background-image: url('3.jpg'); background-position: 120% center; opacity: 0; }
+            75%  { opacity: 1; }
+            95%  { background-position: center center; opacity: 1; }
+            100% { background-position: 120% center; opacity: 0; }
         }
 
         .container {
@@ -53,7 +64,7 @@
             z-index: 2;
             width: 90%;
             max-width: 450px;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.95);
             color: #333;
             padding: 25px;
             border-radius: 20px;
@@ -229,81 +240,4 @@
                     <button type="button" class="time-btn" data-time="10:00 مساءً">10:00 م</button>
                     <button type="button" class="time-btn" data-time="11:00 مساءً">11:00 م</button>
                     <button type="button" class="time-btn" data-time="12:00 منتصف الليل">12:00 ص</button>
-                    <button type="button" class="time-btn" data-time="01:00 بعد منتصف الليل">01:00 ص</button>
-                    <button type="button" class="time-btn" data-time="02:00 بعد منتصف الليل">02:00 ص</button>
-                </div>
-                <input type="hidden" id="selectedTime" required>
-            </div>
-
-            <button type="submit" class="btn-submit">تأكيد وانتقال للتقييم</button>
-        </form>
-
-        <div class="brand-dots">
-            <div class="dot dot-blue"></div>
-            <div class="dot dot-yellow"></div>
-            <div class="dot dot-green"></div>
-            <div class="dot dot-red"></div>
-        </div>
-    </div>
-
-    <script>
-        let selectedTimeString = "";
-        const buttons = document.querySelectorAll('.time-btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedTimeString = btn.getAttribute('data-time');
-                document.getElementById('selectedTime').value = selectedTimeString;
-            });
-        });
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const branchKey = urlParams.get('branch') || 'ramada';
-
-        const branchesData = {
-            'ramada': { name: 'فرع الرمادا (المنصورة)', maps: 'https://maps.app.goo.gl/RAMADA_LINK' },
-            'marshal': { name: 'فرع مارشال (المنصورة)', maps: 'https://maps.app.goo.gl/MARSHAL_LINK' },
-            'tanta': { name: 'فرع طنطا (شارع الجيش)', maps: 'https://maps.app.goo.gl/TANTA_LINK' },
-            'tagamoa': { name: 'فرع التجمع الخامس (تريفيوم سكوير)', maps: 'https://maps.app.goo.gl/TAGAMOA_LINK' }
-        };
-
-        const currentBranch = branchesData[branchKey] || branchesData['ramada'];
-        document.getElementById('branch-title').innerText = `أهلاً بك في ${currentBranch.name}`;
-
-        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('customerName').value;
-            const phone = document.getElementById('customerPhone').value;
-            const time = document.getElementById('selectedTime' ).value;
-
-            if (!time) {
-                alert('الرجاء اختيار وقت الزيارة بالضغط على أحد الأزرار أولاً');
-                return;
-            }
-
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxya-lU3nlI8cF5ud3xCyBlxgbUGXo3gX043jIPymMwQpPGEO71exGk3Xkfh0p64al/exec';
-
-            const formData = {
-                branch: currentBranch.name,
-                name: name,
-                phone: phone,
-                time: time
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            }).then(() => {
-                window.location.href = currentBranch.maps;
-            }).catch(error => {
-                console.error('Error!', error);
-                window.location.href = currentBranch.maps;
-            });
-        });
-    </script>
-</body>
-</html>
+                    <button type="button" class="time-btn" data-time="01:00 بعد منتصف الليل">01:
