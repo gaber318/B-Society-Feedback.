@@ -6,7 +6,6 @@
     <title>B' Society - تقييم الزيارة</title>
     <style>
         :root {
-            /* درجات ألوان البوستر الرسمية لـ B' Society */
             --brand-blue: #2c53d1;
             --brand-yellow: #f8e71c;
             --brand-green: #2ecc71;
@@ -17,7 +16,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #000;
+            background-color: #1b365d;
             color: #333;
             min-height: 100vh;
             display: flex;
@@ -28,7 +27,7 @@
             overflow-x: hidden;
         }
 
-        /* خلفية الصور المتحركة (Slideshow) في الخلفية مع تعتيم خفيف لتوضيح الشاشة */
+        /* خلفية الصور المتحركة بصيغة .jpg */
         .bg-slideshow {
             position: absolute;
             top: 0;
@@ -38,15 +37,15 @@
             z-index: 1;
             background-size: cover;
             background-position: center;
-            animation: slideAnimation 20s infinite linear;
-            filter: brightness(0.45);
+            animation: slideAnimation 15s infinite linear;
+            filter: brightness(0.5);
         }
 
         @keyframes slideAnimation {
-            0%   { background-image: url('img1.jpg'); }
-            33%  { background-image: url('img2.jpg'); }
-            66%  { background-image: url('img3.jpg'); }
-            100% { background-image: url('img1.jpg'); }
+            0%   { background-image: url('1.jpg'); }
+            33%  { background-image: url('2.jpg'); }
+            66%  { background-image: url('3.jpg'); }
+            100% { background-image: url('1.jpg'); }
         }
 
         .container {
@@ -54,7 +53,7 @@
             z-index: 2;
             width: 90%;
             max-width: 450px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             color: #333;
             padding: 25px;
             border-radius: 20px;
@@ -115,7 +114,6 @@
             display: block;
         }
 
-        /* شبكة أزرار أوقات الزيارة الملونة بألوان البراند بدقة */
         .times-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -139,7 +137,6 @@
             border: none;
         }
 
-        /* توزيع الألوان الأربعة بالترتيب (أزرق، أصفر، أخضر، أحمر) */
         .time-btn:nth-child(4n+1) { background-color: var(--brand-blue); color: #fff; }
         .time-btn:nth-child(4n+2) { background-color: var(--brand-yellow); color: #111; }
         .time-btn:nth-child(4n+3) { background-color: var(--brand-green); color: #fff; }
@@ -194,7 +191,6 @@
 </head>
 <body>
 
-    <!-- الخلفية المتحركة بالصور -->
     <div class="bg-slideshow"></div>
 
     <div class="container">
@@ -280,7 +276,7 @@
             
             const name = document.getElementById('customerName').value;
             const phone = document.getElementById('customerPhone').value;
-            const time = document.getElementById('selectedTime').value;
+            const time = document.getElementById('selectedTime' ).value;
 
             if (!time) {
                 alert('الرجاء اختيار وقت الزيارة بالضغط على أحد الأزرار أولاً');
